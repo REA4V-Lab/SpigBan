@@ -1,0 +1,27 @@
+# CLA assistant configuration for SpigBan
+#
+# This file is used by the cla-assistant bot to determine the CLA agreement,
+# accepted signatures, and which PRs require approval.
+#
+# Note: you must have the cla-assistant GitHub App/bot installed and configured
+# on the repository for this to be enforced.
+
+version: 1
+
+# If you use multiple CLAs, you can define more than one contract.
+# For this project, we use a single CLA agreement: CLA.md.
+
+cla_name: "SpigBan CLA"
+
+# Where the CLA text lives in the repository
+agreement_path: "/CLA.md"
+
+# Signature mode
+# - "individual" is typical for most community projects.
+# - If you want corporations/institutions, configure accordingly.
+signature_mode: "individual"
+
+# Users who are allowed to contribute without signing (optional)
+# accepted_users:
+#   - "octocat"
+
