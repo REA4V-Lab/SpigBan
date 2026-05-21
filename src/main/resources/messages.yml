@@ -1,0 +1,128 @@
+# ============================================================
+#   SpigBan Messages — by EmanuelPlays
+# ============================================================
+# Color codes: Use & followed by a color code (0-9, a-f, r, l, m, n, o, k)
+# Placeholders: {player}, {staff}, {reason}, {duration}, {case_id}, {date},
+#               {expires}, {type}, {page}, {total_pages}, {entries}, {ip}
+
+prefix: "&8[&bSpig&3Ban&8] "
+
+# General
+no-permission: "&cYou don't have permission to do that."
+player-not-found: "&cPlayer &f{player} &cnot found."
+player-not-online: "&cPlayer &f{player} &cis not online."
+invalid-duration: "&cInvalid duration &f{duration}&c. Examples: 30s, 15m, 2h, 7d, 1mo, perm"
+must-provide-reason: "&cYou must provide a reason."
+console-only: "&cThis command can only be run from the console."
+player-only: "&cThis command can only be run by a player."
+database-error: "&cA database error occurred. Please contact an administrator."
+plugin-reload: "&aSpigBan configuration reloaded successfully."
+no-entries: "&7No entries found."
+invalid-page: "&cInvalid page number."
+self-target: "&cYou cannot punish yourself."
+target-bypasses: "&c&f{player} &chas bypass permission and cannot be punished."
+purge-confirm: "&cTo confirm purge, type: &f/spigban purge confirm"
+purge-done: "&aDatabase purged. All expired punishments have been removed."
+
+# Ban
+ban-success: "&aSuccessfully banned &f{player}&a. Case: &e{case_id}"
+ban-already: "&c{player} &cis already banned."
+ban-broadcast: "&8[&c&lBAN&8] &f{player} &7has been &c&lbanned &7by &f{staff}&7. Reason: &f{reason} &7| Case: &e{case_id}"
+ban-ip-success: "&aSuccessfully IP banned &f{player}&a. Case: &e{case_id}"
+ban-ip-already: "&c{player}&c's IP is already banned."
+ban-ip-broadcast: "&8[&c&lIP BAN&8] &f{player} &7has been &c&lIP banned &7by &f{staff}&7. Reason: &f{reason} &7| Case: &e{case_id}"
+
+# Temp Ban
+tempban-success: "&aSuccessfully temp-banned &f{player} &afor &f{duration}&a. Case: &e{case_id}"
+tempban-broadcast: "&8[&6&lTEMP BAN&8] &f{player} &7has been &6&ltemp-banned &7for &f{duration} &7by &f{staff}&7. Reason: &f{reason} &7| Case: &e{case_id}"
+tempipban-success: "&aSuccessfully temp IP-banned &f{player} &afor &f{duration}&a. Case: &e{case_id}"
+tempipban-broadcast: "&8[&6&lTEMP IP BAN&8] &f{player} &7has been &6&ltemp IP-banned &7for &f{duration} &7by &f{staff}&7. Reason: &f{reason} &7| Case: &e{case_id}"
+
+# Mute
+mute-success: "&aSuccessfully muted &f{player}&a. Case: &e{case_id}"
+mute-already: "&c{player} &cis already muted."
+mute-broadcast: "&8[&e&lMUTE&8] &f{player} &7has been &e&lmuted &7by &f{staff}&7. Reason: &f{reason} &7| Case: &e{case_id}"
+tempmute-success: "&aSuccessfully temp-muted &f{player} &afor &f{duration}&a. Case: &e{case_id}"
+tempmute-broadcast: "&8[&e&lTEMP MUTE&8] &f{player} &7has been &e&ltemp-muted &7for &f{duration} &7by &f{staff}&7. Reason: &f{reason} &7| Case: &e{case_id}"
+muted-chat-attempt: "&cYou are muted. &7Expires: &f{expires} &8| &7Case: &e{case_id}"
+
+
+# Kick
+kick-success: "&aSuccessfully kicked &f{player}&a."
+kick-broadcast: "&8[&d&lKICK&8] &f{player} &7has been &d&lkicked &7by &f{staff}&7. Reason: &f{reason} &7| Case: &e{case_id}"
+
+# Warn
+warn-success: "&aSuccessfully warned &f{player}&a. Case: &e{case_id} &7(Active warnings: &f{warn_count}&7)"
+warn-broadcast: "&8[&f&lWARN&8] &f{player} &7has received a &f&lwarning &7from &f{staff}&7. Reason: &f{reason} &7| Case: &e{case_id}"
+warn-threshold: "&e&lWARN THRESHOLD &7triggered for &f{player}&7: &f{warn_count} &7active warnings — executing &f{action}&7."
+warn-receive: "&cYou have received a warning from &f{staff}&c. Reason: &f{reason} &7| Case: &e{case_id} &7| Active warnings: &f{warn_count}"
+
+# Unban
+unban-success: "&aSuccessfully unbanned &f{player}&a."
+unban-not-banned: "&c{player} &cis not currently banned."
+unban-broadcast: "&8[&a&lUNBAN&8] &f{player} &7has been &a&lunbanned &7by &f{staff}&7."
+
+# Unmute
+unmute-success: "&aSuccessfully unmuted &f{player}&a."
+unmute-not-muted: "&c{player} &cis not currently muted."
+unmute-broadcast: "&8[&a&lUNMUTE&8] &f{player} &7has been &a&lunmuted &7by &f{staff}&7."
+
+# Unwarn
+unwarn-success: "&aSuccessfully removed warning &e{case_id}&a from &f{player}&a."
+unwarn-not-found: "&cWarning case &f{case_id} &cnot found or already removed."
+unwarn-all-success: "&aRemoved all &f{count} &aactive warnings from &f{player}&a."
+
+# Case
+case-header: "&8&m------------ &b&lCase &e{case_id} &8&m------------"
+case-player: "  &7Player&8: &f{player} &8(&7{uuid}&8)"
+case-staff: "  &7Staff&8:  &f{staff}"
+case-type: "  &7Type&8:   {type_color}{type}"
+case-reason: "  &7Reason&8: &f{reason}"
+case-date: "  &7Date&8:   &f{date}"
+case-expires: "  &7Expires&8: &f{expires}"
+case-status: "  &7Status&8: {status}"
+case-ip: "  &7IP&8:     &f{ip}"
+case-notes: "  &7Notes&8:  &7{notes}"
+case-footer: "&8&m--------------------------------------"
+case-not-found: "&cCase &f{case_id} &cnot found."
+case-status-active: "&a&lACTIVE"
+case-status-inactive: "&c&lINACTIVE"
+case-status-expired: "&6&lEXPIRED"
+case-type-ban: "&c"
+case-type-tempban: "&6"
+case-type-ipban: "&4"
+case-type-tempipban: "&c"
+case-type-mute: "&e"
+case-type-tempmute: "&6"
+case-type-warn: "&f"
+case-type-kick: "&d"
+case-never-expires: "Never (Permanent)"
+
+# History
+history-header: "&8&m----- &b&lHistory &7for &f{player} &b&l[Page {page}/{total_pages}] &8&m-----"
+history-entry: "  &8[&e{case_id}&8] &7{date} &8| {type_color}{type} &7by &f{staff} &8— &7{reason}"
+history-footer: "&8&m--- &7Total: &f{total} &7entries &8&m---"
+history-empty: "&7No punishment history for &f{player}&7."
+
+# Lists
+banlist-header: "&8&m------- &c&lActive Bans &8[Page {page}/{total_pages}] &8&m-------"
+banlist-entry: "  &8[&e{case_id}&8] &f{player} &7by &f{staff} &8— &7{reason} &8| &7Expires: &f{expires}"
+mutelist-header: "&8&m------- &e&lActive Mutes &8[Page {page}/{total_pages}] &8&m------"
+mutelist-entry: "  &8[&e{case_id}&8] &f{player} &7by &f{staff} &8— &7{reason} &8| &7Expires: &f{expires}"
+
+# Case list
+caselist-header: "&8&m------- &b&lServer Cases &8[Page {page}/{total_pages}] &8&m-------"
+caselist-entry: "  &8[&e{case_id}&8] &f{player} &7by &f{staff} &8| &7Type: {type_color}{type} &8| &7Status: {status} &8| &7Appeal: &bhttps://bit.ly/universal-appeal"
+
+caselist-footer: "&8&m--- &7Total cases: &f{total} &8&m---"
+caselist-empty: "&7No punishments recorded yet."
+
+# Admin
+info-header: "&8&m============ &b&lSpigBan &8&m============"
+info-version: "  &7Version&8: &b{version}"
+info-database: "  &7Database&8: &b{database}"
+info-total-punishments: "  &7Total Punishments&8: &b{total}"
+info-active-bans: "  &7Active Bans&8: &c{bans}"
+info-active-mutes: "  &7Active Mutes&8: &e{mutes}"
+info-footer: "&8&m======================================"
+

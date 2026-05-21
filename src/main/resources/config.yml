@@ -1,0 +1,103 @@
+# ============================================================
+#   SpigBan Configuration — by EmanuelPlays
+# ============================================================
+
+# Database Settings
+database:
+  # Type: 'sqlite' (default, no setup needed) or 'mysql'
+  type: sqlite
+  # MySQL settings (ignored if type is sqlite)
+  host: localhost
+  port: 3306
+  database: spigban
+  username: root
+  password: ""
+  # How often (in minutes) to clean up expired punishments (0 = disabled)
+  cleanup-interval: 5
+
+# Broadcast Settings
+broadcast:
+  # Broadcast punishment actions to all players with spigban.notify permission
+  enabled: true
+  # Also show in console
+  console: true
+
+# LuckPerms Integration
+integrations:
+  luckperms:
+    enabled: true
+
+# Ban Screen Settings
+ban-screen:
+  # Use multiline ban screens. Each line is a message key from messages.yml.
+  # Placeholders: {reason}, {duration}, {staff}, {case_id}, {date}, {expires}
+  lines:
+    - "&c&l&m▌&r &4&lSPIGBAN &f&lBAN &4&l▐&r"
+    - "&7"
+    - "&fYou have been &c&lBANNED"
+    - "&7"
+    - "&eReason&8: &f{reason}"
+    - "&eStaff&8:  &f{staff}"
+    - "&eCase ID&8: &f{case_id}"
+    - "&eDate&8:    &f{date}"
+    - "&eExpires&8: &f{expires}"
+    - "&7"
+    - "&bIf you believe this is a mistake, appeal on our Discord."
+    - "&aAppeal&8: &bhttps://bit.ly/universal-appeal"
+    - "&c&l&m▌&r &4&lSPIGBAN &f&lBAN &4&l▐&r"
+
+mute-screen:
+  lines:
+    - "&e&l&m▌&r &6&lSPIGBAN &f&lMUTE &6&l▐&r"
+    - "&7"
+    - "&fYou are &e&lMUTED"
+    - "&7"
+    - "&eReason&8: &f{reason}"
+    - "&eStaff&8:  &f{staff}"
+    - "&eCase ID&8: &f{case_id}"
+    - "&eExpires&8: &f{expires}"
+    - "&7"
+    - "&aAppeal&8: &bhttps://bit.ly/universal-appeal"
+    - "&e&l&m▌&r &6&lSPIGBAN &f&lMUTE &6&l▐&r"
+
+# Warn Thresholds — Automated actions when a player reaches X active warnings
+# Supported actions: KICK, TEMPMUTE, MUTE, TEMPBAN, BAN, TEMPIPBAN, IPBAN
+warn-thresholds:
+  3:
+    action: TEMPMUTE
+    duration: "30m"
+    reason: "Automatically muted — reached 3 warnings"
+  5:
+    action: TEMPBAN
+    duration: "1d"
+    reason: "Automatically banned — reached 5 warnings"
+  10:
+    action: BAN
+    reason: "Automatically permanently banned — reached 10 warnings"
+
+# Reason Templates — Use /ban <player> #<template> to use a template
+reason-templates:
+  hacking: "Hacking / Use of unauthorized modifications"
+  chat: "Toxic / offensive behavior in chat"
+  spam: "Chat spamming"
+  grief: "Griefing other players' builds"
+  dupe: "Duplication glitch abuse"
+  racism: "Racist or discriminatory language"
+  impersonation: "Impersonating staff"
+
+# Case ID Format
+# Available: SPGB-XXXXX (default), custom prefix
+case-id:
+  prefix: "SPGB"
+  length: 6  # Random characters after prefix (min 4, max 10)
+
+# Pagination
+pagination:
+  entries-per-page: 10
+
+# Logging
+logging:
+  # Log all punishment actions to a file
+  enabled: true
+  file: "punishments.log"
+

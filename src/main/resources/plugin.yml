@@ -1,0 +1,156 @@
+name: SpigBan
+version: ${project.version}
+main: dev.emanuelplays.spigban.SpigBan
+api-version: "1.21"
+description: Advanced all-in-one punishment management plugin
+authors: [EmanuelPlays]
+website: https://github.com/EmanuelPlays/
+
+commands:
+  ban:
+    description: Permanently ban a player
+    usage: /ban <player> [reason]
+    permission: spigban.ban
+  tempban:
+    description: Temporarily ban a player
+    usage: /tempban <player> <duration> [reason]
+    permission: spigban.tempban
+  ipban:
+    description: Permanently IP-ban a player
+    usage: /ipban <player|ip> [reason]
+    permission: spigban.ipban
+  tempipban:
+    description: Temporarily IP-ban a player
+    usage: /tempipban <player|ip> <duration> [reason]
+    permission: spigban.tempipban
+  mute:
+    description: Permanently mute a player
+    usage: /mute <player> [reason]
+    permission: spigban.mute
+  tempmute:
+    description: Temporarily mute a player
+    usage: /tempmute <player> <duration> [reason]
+    permission: spigban.tempmute
+  kick:
+    description: Kick a player from the server
+    usage: /kick <player> [reason]
+    permission: spigban.kick
+  warn:
+    description: Warn a player
+    usage: /warn <player> <reason>
+    permission: spigban.warn
+  unban:
+    description: Unban a player
+    usage: /unban <player>
+    permission: spigban.unban
+  unmute:
+    description: Unmute a player
+    usage: /unmute <player>
+    permission: spigban.unmute
+  unwarn:
+    description: Remove a warning by case ID or clear all for a player
+    usage: /unwarn <caseId|player>
+    permission: spigban.unwarn
+  case:
+    description: View detailed information about a case
+    usage: /case <caseId>
+    permission: spigban.case
+  history:
+    description: View punishment history of a player
+    usage: /history <player> [page]
+    permission: spigban.history
+  banlist:
+    description: View list of active bans
+    usage: /banlist [page]
+    permission: spigban.banlist
+  mutelist:
+    description: View list of active mutes
+    usage: /mutelist [page]
+    permission: spigban.mutelist
+  caselist:
+    description: View all punishment cases
+    usage: /caselist [page]
+    permission: spigban.caselist
+  spigban:
+    description: SpigBan admin commands
+    usage: /spigban <reload|info|purge>
+    permission: spigban.admin
+
+
+permissions:
+  spigban.*:
+    description: Grants all SpigBan permissions
+    default: op
+    children:
+      spigban.ban: true
+      spigban.tempban: true
+      spigban.ipban: true
+      spigban.tempipban: true
+      spigban.mute: true
+      spigban.tempmute: true
+      spigban.kick: true
+      spigban.warn: true
+      spigban.unban: true
+      spigban.unmute: true
+      spigban.unwarn: true
+      spigban.case: true
+      spigban.history: true
+      spigban.banlist: true
+      spigban.mutelist: true
+      spigban.admin: true
+      spigban.notify: true
+      spigban.bypass: true
+  spigban.ban:
+    description: Allows banning players
+    default: op
+  spigban.tempban:
+    description: Allows temporary banning players
+    default: op
+  spigban.ipban:
+    description: Allows IP banning players
+    default: op
+  spigban.tempipban:
+    description: Allows temporary IP banning players
+    default: op
+  spigban.mute:
+    description: Allows muting players
+    default: op
+  spigban.tempmute:
+    description: Allows temporary muting players
+    default: op
+  spigban.kick:
+    description: Allows kicking players
+    default: op
+  spigban.warn:
+    description: Allows warning players
+    default: op
+  spigban.unban:
+    description: Allows unbanning players
+    default: op
+  spigban.unmute:
+    description: Allows unmuting players
+    default: op
+  spigban.unwarn:
+    description: Allows removing warnings
+    default: op
+  spigban.case:
+    description: Allows viewing case details
+    default: op
+  spigban.history:
+    description: Allows viewing punishment history
+    default: op
+  spigban.banlist:
+    description: Allows viewing the ban list
+    default: op
+  spigban.mutelist:
+    description: Allows viewing the mute list
+    default: op
+  spigban.admin:
+    description: Allows using admin SpigBan commands
+    default: op
+  spigban.notify:
+    description: Receives staff punishment notifications
+    default: op
+  spigban.bypass:
+    description: Allows bypassing punishments (immune to ban/mute/kick/warn)
+    default: false
