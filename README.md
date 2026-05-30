@@ -1,6 +1,7 @@
 # SpigBan
 
 **SpigBan** is an advanced all-in-one punishment management plugin for **Spigot 1.21.x**.
+    
 <a href="https://cla-assistant.io/REA4V-Lab/SpigBan"><img src="https://cla-assistant.io/readme/badge/REA4V-Lab/SpigBan" alt="CLA assistant" /></a>
 ## Features
 - Ban, temp-ban, IP-ban, temp-IP-ban
