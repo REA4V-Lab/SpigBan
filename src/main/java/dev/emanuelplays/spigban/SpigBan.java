@@ -11,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
- * @author EmanuelPlays
  * @version 1.0.0
  */
 public class SpigBan extends JavaPlugin {
