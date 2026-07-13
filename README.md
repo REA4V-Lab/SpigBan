@@ -14,12 +14,6 @@
 - Optional LuckPerms integration
 - Configurable ban/mute screens and broadcast settings
 
-## Installation
-1. Build the plugin: `mvn package`
-2. Put the generated jar in your server `plugins/` folder
-3. Start the server
-4. Configure `config.yml` (optional)
-
 ## Commands
 Commands and permissions are defined in `src/main/resources/plugin.yml`.
 
@@ -55,13 +49,6 @@ See `src/main/resources/config.yml`.
 ## Placeholders (in screen lines)
 - `{reason}`, `{duration}`, `{staff}`
 - `{case_id}`, `{date}`, `{expires}`
-
-## Building
-- Java: **21**
-- Build: `mvn package`
-
-## Support
-- Website/GitHub: https://github.com/REA4V-Lab/SpigBan
 
 
 ## License & CLA
