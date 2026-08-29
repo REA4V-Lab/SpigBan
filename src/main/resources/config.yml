@@ -32,7 +32,7 @@ ban-screen:
   # Use multiline ban screens. Each line is a message key from messages.yml.
   # Placeholders: {reason}, {duration}, {staff}, {case_id}, {date}, {expires}
   lines:
-    - "&c&l&m▌&r &4&lSPIGBAN &f&lBAN &4&l▐&r"
+    - "&c&l&m▌&r &4&l&f&lBAN &4&l▐&r"
     - "&7"
     - "&fYou have been &c&lBANNED"
     - "&7"
@@ -43,12 +43,12 @@ ban-screen:
     - "&eExpires&8: &f{expires}"
     - "&7"
     - "&bIf you believe this is a mistake, appeal on our Discord."
-    - "&aAppeal&8: &bhttps://bit.ly/universal-appeal"
-    - "&c&l&m▌&r &4&lSPIGBAN &f&lBAN &4&l▐&r"
+    - "&aAppeal&8: &b PLACEHOLDER, EDIT IN CONFIG.YML"
+    - "&c&l&m▌&r &4&l&f&L SPIGBAN &4&l▐&r"
 
 mute-screen:
   lines:
-    - "&e&l&m▌&r &6&lSPIGBAN &f&lMUTE &6&l▐&r"
+    - "&e&l&m▌&r &6&l &f&lMUTE &6&l▐&r"
     - "&7"
     - "&fYou are &e&lMUTED"
     - "&7"
@@ -57,8 +57,8 @@ mute-screen:
     - "&eCase ID&8: &f{case_id}"
     - "&eExpires&8: &f{expires}"
     - "&7"
-    - "&aAppeal&8: &bhttps://bit.ly/universal-appeal"
-    - "&e&l&m▌&r &6&lSPIGBAN &f&lMUTE &6&l▐&r"
+    - "&aAppeal&8: &b PLACEHOLDER, EDIT IN CONFIG.YML"
+    - "&e&l&m▌&r &6&lSPIGBAN&6&l▐&r"
 
 # Warn Thresholds — Automated actions when a player reaches X active warnings
 # Supported actions: KICK, TEMPMUTE, MUTE, TEMPBAN, BAN, TEMPIPBAN, IPBAN
@@ -101,3 +101,16 @@ logging:
   enabled: true
   file: "punishments.log"
 
+# Update Checking
+update-checking:
+  # Enable automatic update checking
+  enabled: true
+  # How often (in minutes) to check for updates (0 = disabled, minimum 10)
+  interval: 60
+  # Notify admins/console when an update is available
+  notify-on-update: true
+
+# -----------------------------------------------------------
+# SPIGBAN 2.0.0 --- SEE LATEST IN THE GITHUB REPO FOR UPDATES
+# ARR - ALL RIGHTS RESERVED
+# -----------------------------------------------------------

@@ -7,6 +7,7 @@ import dev.emanuelplays.spigban.listeners.LoginListener;
 import dev.emanuelplays.spigban.managers.CaseManager;
 import dev.emanuelplays.spigban.managers.PunishmentManager;
 import dev.emanuelplays.spigban.utils.MessageUtil;
+import dev.emanuelplays.spigban.utils.UpdateChecker;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -39,6 +40,9 @@ public class SpigBan extends JavaPlugin {
         caseManager      = new CaseManager(this);
         punishmentManager = new PunishmentManager(this);
         luckPermsHook = new dev.emanuelplays.spigban.integrations.LuckPermsHook(this);
+        // Update checker
+        UpdateChecker updateChecker = new UpdateChecker(this);
+        updateChecker.start();
 
 
         registerCommands();
@@ -100,12 +104,14 @@ public class SpigBan extends JavaPlugin {
         BanListCommand  banListCmd  = new BanListCommand(this);
         MuteListCommand muteListCmd = new MuteListCommand(this);
         CaselistCommand caselistCmd = new CaselistCommand(this);
+        KofiCommand     kofiCmd     = new KofiCommand(this);
 
         reg("case",     caseCmd,     caseCmd);
         reg("history",  historyCmd,  historyCmd);
         reg("banlist",  banListCmd,  banListCmd);
         reg("mutelist", muteListCmd, muteListCmd);
         reg("caselist", caselistCmd, caselistCmd);
+        reg("kofi",     kofiCmd,     kofiCmd);
 
 
         // Admin command

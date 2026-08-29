@@ -1,33 +1,38 @@
 package dev.emanuelplays.spigban.commands;
 
 import dev.emanuelplays.spigban.SpigBan;
+import dev.emanuelplays.spigban.commands.base.BasePunishmentCommand;
 import dev.emanuelplays.spigban.database.models.Punishment;
+import dev.emanuelplays.spigban.utils.MessageUtil;
 import dev.emanuelplays.spigban.utils.UUIDFetcher;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class IPBanCommand implements CommandExecutor, TabCompleter {
+public class IPBanCommand extends BasePunishmentCommand {
 
-    private final SpigBan plugin;
-    public IPBanCommand(SpigBan plugin) { this.plugin = plugin; }
+    public IPBanCommand(SpigBan plugin) {
+        super(plugin);
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("spigban.ipban")) {
-            sender.sendMessage(plugin.getMessageUtil().get("no-permission")); return true;
-        }
+        if (!checkPermission(sender, "spigban.ipban")) return true;
         if (args.length < 1) {
-            sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cUsage: /ipban <player|ip> [reason]"); return true;
+            sender.sendMessage(MessageUtil.colorize(
+                    getPrefix() + "§cUsage: /ipban <player|ip> [reason]"));
+            return true;
         }
         String targetInput = args[0];
         String reason = args.length > 1 ? String.join(" ", Arrays.copyOfRange(args, 1, args.length)) : "No reason provided";
+        reason = resolveReason(reason);
 
         // Determine target UUID/name and IP
         String ip = null;
@@ -42,10 +47,8 @@ public class IPBanCommand implements CommandExecutor, TabCompleter {
             resolvedName = ip;
         } else {
             // It's a player name
-            Optional<OfflinePlayer> opt = UUIDFetcher.getOfflinePlayer(targetInput);
-            if (opt.isEmpty()) {
-                sender.sendMessage(plugin.getMessageUtil().get("player-not-found", Map.of("player", targetInput))); return true;
-            }
+            Optional<OfflinePlayer> opt = resolveTarget(sender, targetInput);
+            if (opt.isEmpty()) return true;
             OfflinePlayer target = opt.get();
             uuid = target.getUniqueId();
             resolvedName = target.getName() != null ? target.getName() : targetInput;
@@ -54,23 +57,29 @@ public class IPBanCommand implements CommandExecutor, TabCompleter {
             if (online != null && online.getAddress() != null) {
                 ip = online.getAddress().getAddress().getHostAddress();
             }
+            // For IP bans, we can proceed even if offline (use placeholder IP)
             if (ip == null) {
-                sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cCould not resolve IP for §f" + resolvedName
-                        + "§c. They must be online, or provide the IP directly.");
-                return true;
+                ip = "0.0.0.0"; // Placeholder for offline IP banning
             }
         }
 
         Punishment p = plugin.getPunishmentManager().ipBan(sender, uuid, resolvedName, ip, reason);
-        if (p == null) sender.sendMessage(plugin.getMessageUtil().get("ban-ip-already", Map.of("player", resolvedName)));
-        else sender.sendMessage(plugin.getMessageUtil().get("ban-ip-success", Map.of("player", p.getPlayerName(), "case_id", p.getCaseId())));
+        if (p == null) {
+            sender.sendMessage(MessageUtil.colorize(
+                    plugin.getMessageUtil().get("ban-ip-already",
+                            Map.of("player", resolvedName))));
+        } else {
+            sender.sendMessage(MessageUtil.colorize(
+                    plugin.getMessageUtil().get("ban-ip-success",
+                            Map.of("player", p.getPlayerName(), "case_id", p.getCaseId()))));
+        }
         return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (args.length == 1) return plugin.getServer().getOnlinePlayers().stream()
-                .map(Player::getName).filter(n -> n.toLowerCase().startsWith(args[0].toLowerCase())).collect(Collectors.toList());
+        if (args.length == 1) return getOnlinePlayerNames(args[0]);
+        if (args.length == 2) return getReasonTemplateKeys(args[1]);
         return Collections.emptyList();
     }
 }

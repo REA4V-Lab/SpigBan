@@ -2,6 +2,7 @@ package dev.emanuelplays.spigban.commands;
 
 import dev.emanuelplays.spigban.SpigBan;
 import dev.emanuelplays.spigban.utils.MessageUtil;
+import dev.emanuelplays.spigban.utils.UpdateChecker;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -74,6 +75,23 @@ public class SpigBanCommand implements CommandExecutor, TabCompleter {
                         + "§aMarked §f" + cleaned + " §aexpired punishment(s) as inactive.");
             }
 
+            case "version" -> {
+                UpdateChecker updater = new UpdateChecker(plugin);
+                String latest = updater.getLatestVersion();
+                if (latest != null && !latest.isEmpty()) {
+                    boolean isNew = updater.isNewerVersionAvailable();
+                    if (isNew) {
+                        sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§eCurrent version: §f" + plugin.getDescription().getVersion() + " §c✗ Outdated");
+                        sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§eLatest version:  §f" + latest);
+                    } else {
+                        sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§eCurrent version: §f" + plugin.getDescription().getVersion() + " §a✓ Up to date");
+                    }
+                } else {
+                    sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§eCurrent version: §f" + plugin.getDescription().getVersion());
+                    sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cCould not check for updates.");
+                }
+            }
+
             case "check" -> {
                 if (args.length < 2) {
                     sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cUsage: /spigban check <player>");
@@ -110,13 +128,14 @@ public class SpigBanCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(MessageUtil.colorize("  §b/spigban check <player> §7- Check player status"));
         sender.sendMessage(MessageUtil.colorize("  §b/spigban cleanup §7- Mark expired punishments inactive"));
         sender.sendMessage(MessageUtil.colorize("  §b/spigban purge [confirm] §7- Delete inactive records"));
+        sender.sendMessage(MessageUtil.colorize("  §b/spigban version §7- Check for updates and show current version"));
         sender.sendMessage(MessageUtil.colorize("§8&m-------------------------------"));
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return List.of("reload", "info", "purge", "cleanup", "check").stream()
+            return List.of("reload", "info", "purge", "cleanup", "check", "version").stream()
                     .filter(s -> s.startsWith(args[0].toLowerCase()))
                     .collect(Collectors.toList());
         }

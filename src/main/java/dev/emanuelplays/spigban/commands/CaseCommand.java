@@ -1,45 +1,42 @@
 package dev.emanuelplays.spigban.commands;
 
 import dev.emanuelplays.spigban.SpigBan;
+import dev.emanuelplays.spigban.commands.base.BaseCommand;
 import dev.emanuelplays.spigban.database.models.Punishment;
 import dev.emanuelplays.spigban.managers.CaseManager;
 import dev.emanuelplays.spigban.utils.MessageUtil;
 import dev.emanuelplays.spigban.utils.TimeUtil;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import java.util.*;
+import java.util.Optional;
 
 /**
- * /case <caseId> — Displays detailed info about a punishment case.
+ * /case <caseId> [delete/save/close] — Displays detailed info about a punishment case or performs actions.
  *
- * Example output:
- * ──────── Case SPGB-A1B2C3 ────────
- *   Player : Steve (uuid...)
- *   Staff  : EmanuelPlays
- *   Type   : Temp Ban
- *   Reason : Hacking
- *   Date   : 01/06/2025 14:32:00
- *   Expires: 08/06/2025 14:32:00 (in 6 days, 23 hours)
- *   Status : ACTIVE
- *   IP     : 192.168.1.1  (only for IP bans)
- *   Notes  : (none)
- * ──────────────────────────────────
+ * Examples:
+ *   /case SPGB-A1B2C3          — Shows case details
+ *   /case SPGB-A1B2C3 delete   — Deletes the case
+ *   /case SPGB-A1B2C3 close    — Closes (deactivates) the case
+ *   /case SPGB-A1B2C3 save     — Placeholder for saving (not implemented)
  */
-public class CaseCommand implements CommandExecutor, TabCompleter {
+public class CaseCommand extends BaseCommand {
 
-    private final SpigBan plugin;
-    public CaseCommand(SpigBan plugin) { this.plugin = plugin; }
+    public CaseCommand(SpigBan plugin) {
+        super(plugin);
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("spigban.case")) {
-            sender.sendMessage(plugin.getMessageUtil().get("no-permission")); return true;
+            sender.sendMessage(plugin.getMessageUtil().get("no-permission"));
+            return true;
         }
         if (args.length < 1) {
-            sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cUsage: /case <caseId>"); return true;
+            sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cUsage: /case <caseId> [delete/save/close]");
+            return true;
         }
 
         String caseId = CaseManager.normalize(args[0]);
@@ -50,8 +47,37 @@ public class CaseCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        Punishment p = opt.get();
+        // If only caseId is provided, show case details
+        if (args.length == 1) {
+            showCaseDetails(sender, opt.get());
+            return true;
+        }
 
+        // Handle subcommands
+        if (args.length == 2) {
+            String subcmd = args[1].toLowerCase();
+            switch (subcmd) {
+                case "delete":
+                    return handleDeleteCase(sender, caseId);
+                case "close":
+                    return handleCloseCase(sender, caseId);
+                case "save":
+                    return handleSaveCase(sender, caseId);
+                default:
+                    sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cUnknown subcommand. Use: delete, save, close");
+                    return true;
+            }
+        }
+
+        // Too many arguments
+        sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cUsage: /case <caseId> [delete/save/close]");
+        return true;
+    }
+
+    /**
+     * Shows detailed case information.
+     */
+    private void showCaseDetails(CommandSender sender, Punishment p) {
         // Auto-deactivate if expired but still marked active
         if (p.isActive() && p.isExpired()) {
             plugin.getDatabaseManager().deactivatePunishment(p.getCaseId());
@@ -117,11 +143,42 @@ public class CaseCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(plugin.getMessageUtil().getRaw("case-notes", Map.of("notes", notes)));
 
         sender.sendMessage(plugin.getMessageUtil().getRaw("case-footer"));
+    }
+
+    /**
+     * Handles deleting a case.
+     */
+    private boolean handleDeleteCase(CommandSender sender, String caseId) {
+        boolean removed = plugin.getPunishmentManager().unwarnByCase(sender, caseId);
+        if (removed) {
+            sender.sendMessage(plugin.getMessageUtil().get("casesdeleted", Map.of("case_id", caseId)));
+        } else {
+            sender.sendMessage(plugin.getMessageUtil().get("casenotdeleted", Map.of("case_id", caseId)));
+        }
+        return true;
+    }
+
+    /**
+     * Handles closing (deactivating) a case.
+     */
+    private boolean handleCloseCase(CommandSender sender, String caseId) {
+        plugin.getDatabaseManager().deactivatePunishment(caseId);
+        sender.sendMessage(plugin.getMessageUtil().getPrefix() + "Case §e" + caseId + " §ahas been closed.");
+        return true;
+    }
+
+    /**
+     * Handles saving a case (placeholder).
+     */
+    private boolean handleSaveCase(CommandSender sender, String caseId) {
+        sender.sendMessage(plugin.getMessageUtil().getPrefix() + "Saving case §e" + caseId + " §fis not yet implemented.");
         return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        // We could implement tab completion for case IDs here, but for simplicity we return empty.
+        // If you want to add case ID tab completion, you would need to fetch case IDs from the database.
         return Collections.emptyList();
     }
 }

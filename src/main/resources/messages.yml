@@ -1,5 +1,5 @@
 # ============================================================
-#   SpigBan Messages — by EmanuelPlays
+#   SpigBan Messages — by EmanuelPlays // ARR
 # ============================================================
 # Color codes: Use & followed by a color code (0-9, a-f, r, l, m, n, o, k)
 # Placeholders: {player}, {staff}, {reason}, {duration}, {case_id}, {date},
@@ -112,10 +112,26 @@ mutelist-entry: "  &8[&e{case_id}&8] &f{player} &7by &f{staff} &8— &7{reason} 
 
 # Case list
 caselist-header: "&8&m------- &b&lServer Cases &8[Page {page}/{total_pages}] &8&m-------"
-caselist-entry: "  &8[&e{case_id}&8] &f{player} &7by &f{staff} &8| &7Type: {type_color}{type} &8| &7Status: {status} &8| &7Appeal: &bhttps://bit.ly/universal-appeal"
-
+caselist-entry: "  &8[&e{case_id}&8] &7{info_button} &7{delete_button} &f{player} &7by &f{staff} &8| &7Type: {type_color}{type} &8| &7Status: {status}"
 caselist-footer: "&8&m--- &7Total cases: &f{total} &8&m---"
 caselist-empty: "&7No punishments recorded yet."
+
+# Case list buttons
+info-button: "&b[Info]"
+delete-button: "&c[Delete]"
+
+# Case list hover
+caselist-hover: "&fCase ID: &e{case_id}\n&fPlayer: &e{player}\n&fStaff: &e{staff}\n&fType: &e{type}\n&fReason: &e{reason}\n&fDate: &e{date}\n&fExpires: &e{expires}\n&fStatus: &e{status}"
+
+# Case list delete
+caselist-delete-usage: "&cUsage: /caselist delete <caseId>"
+caselist-delete-not-found: "&cCase &f{caseId} &cnot found."
+caselist-delete-success: "&aCase &f{caseId} &ahas been deleted."
+caselist-delete-failed: "&cFailed to delete case &f{caseId}."
+
+# Unwarn (already used in deleteCase method)
+casesdeleted: "&aSuccessfully removed case &f{case_id}&a."
+casenotdeleted: "&cDelete case not implemented yet stay tuned"
 
 # Admin
 info-header: "&8&m============ &b&lSpigBan &8&m============"
@@ -125,4 +141,3 @@ info-total-punishments: "  &7Total Punishments&8: &b{total}"
 info-active-bans: "  &7Active Bans&8: &c{bans}"
 info-active-mutes: "  &7Active Mutes&8: &e{mutes}"
 info-footer: "&8&m======================================"
-

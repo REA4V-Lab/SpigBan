@@ -312,7 +312,7 @@ public class PunishmentManager {
         plugin.getDatabaseManager().savePunishment(p);
     }
 
-    private String resolveReason(String reason) {
+    public String resolveReason(String reason) {
         if (reason == null || reason.isEmpty()) return "No reason provided";
         if (reason.startsWith("#")) {
             String key = reason.substring(1).toLowerCase();

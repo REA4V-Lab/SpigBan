@@ -1,39 +1,48 @@
 package dev.emanuelplays.spigban.commands;
 
 import dev.emanuelplays.spigban.SpigBan;
+import dev.emanuelplays.spigban.commands.base.BasePunishmentCommand;
+import dev.emanuelplays.spigban.utils.MessageUtil;
 import dev.emanuelplays.spigban.utils.UUIDFetcher;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class UnmuteCommand implements CommandExecutor, TabCompleter {
+public class UnmuteCommand extends BasePunishmentCommand {
 
-    private final SpigBan plugin;
-    public UnmuteCommand(SpigBan plugin) { this.plugin = plugin; }
+    public UnmuteCommand(SpigBan plugin) {
+        super(plugin);
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("spigban.unmute")) {
-            sender.sendMessage(plugin.getMessageUtil().get("no-permission")); return true;
-        }
+        if (!checkPermission(sender, "spigban.unmute")) return true;
         if (args.length < 1) {
-            sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cUsage: /unmute <player>"); return true;
+            sender.sendMessage(MessageUtil.colorize(
+                    getPrefix() + "§cUsage: /unmute <player>"));
+            return true;
         }
         String targetName = args[0];
-        Optional<OfflinePlayer> opt = UUIDFetcher.getOfflinePlayer(targetName);
-        if (opt.isEmpty()) {
-            sender.sendMessage(plugin.getMessageUtil().get("player-not-found", Map.of("player", targetName))); return true;
-        }
+        Optional<OfflinePlayer> opt = resolveTarget(sender, targetName);
+        if (opt.isEmpty()) return true;
         OfflinePlayer target = opt.get();
         String resolvedName = target.getName() != null ? target.getName() : targetName;
         boolean success = plugin.getPunishmentManager().unmute(sender, target.getUniqueId(), resolvedName);
-        if (!success) sender.sendMessage(plugin.getMessageUtil().get("unmute-not-muted", Map.of("player", resolvedName)));
-        else sender.sendMessage(plugin.getMessageUtil().get("unmute-success", Map.of("player", resolvedName)));
+        if (!success) sender.sendMessage(MessageUtil.colorize(
+                plugin.getMessageUtil().get("unmute-not-muted",
+                        Map.of("player", resolvedName))));
+        else sender.sendMessage(MessageUtil.colorize(
+                plugin.getMessageUtil().get("unmute-success",
+                        Map.of("player", resolvedName))));
         return true;
     }
 

@@ -4,7 +4,7 @@ main: dev.emanuelplays.spigban.SpigBan
 api-version: "1.21"
 description: Advanced all-in-one punishment management plugin
 authors: [EmanuelPlays]
-website: https://github.com/EmanuelPlays/
+website: https://rea4v.xo.je
 
 commands:
   ban:
@@ -71,6 +71,10 @@ commands:
     description: View all punishment cases
     usage: /caselist [page]
     permission: spigban.caselist
+  kofi:
+    description: Support the developer via Ko-fi
+    usage: /kofi
+    permission: spigban.kofi
   spigban:
     description: SpigBan admin commands
     usage: /spigban <reload|info|purge>
@@ -136,6 +140,9 @@ permissions:
   spigban.case:
     description: Allows viewing case details
     default: op
+  spigban.caselist.delete:
+    description: Allows deleting cases from the caselist
+    default: op
   spigban.history:
     description: Allows viewing punishment history
     default: op
@@ -145,6 +152,9 @@ permissions:
   spigban.mutelist:
     description: Allows viewing the mute list
     default: op
+  spigban.kofi:
+    description: Allows using the /kofi command
+    default: true
   spigban.admin:
     description: Allows using admin SpigBan commands
     default: op

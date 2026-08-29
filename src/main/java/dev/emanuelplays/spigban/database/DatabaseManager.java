@@ -334,6 +334,25 @@ public class DatabaseManager {
         return queryList(sql, limit, offset);
     }
 
+    /**
+     * Returns a list of all case IDs (used for tab completion).
+     */
+    public synchronized List<String> getAllCaseIds(int limit) {
+        List<String> list = new ArrayList<>();
+        String sql = "SELECT case_id FROM spigban_punishments ORDER BY start_time DESC LIMIT ?";
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            ps.setInt(1, limit);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(rs.getString("case_id"));
+                }
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to get case IDs!", e);
+        }
+        return list;
+    }
+
     // ── Private Helpers ─────────────────────────────────────────────
 
     private Optional<Punishment> queryOne(String sql, String param) {

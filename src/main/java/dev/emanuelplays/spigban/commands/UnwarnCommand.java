@@ -1,21 +1,24 @@
 package dev.emanuelplays.spigban.commands;
 
 import dev.emanuelplays.spigban.SpigBan;
+import dev.emanuelplays.spigban.commands.base.BasePunishmentCommand;
 import dev.emanuelplays.spigban.managers.CaseManager;
+import dev.emanuelplays.spigban.utils.MessageUtil;
 import dev.emanuelplays.spigban.utils.UUIDFetcher;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import java.util.*;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-public class UnwarnCommand implements CommandExecutor, TabCompleter {
+public class UnwarnCommand extends BasePunishmentCommand {
 
-    private final SpigBan plugin;
-    public UnwarnCommand(SpigBan plugin) { this.plugin = plugin; }
+    public UnwarnCommand(SpigBan plugin) {
+        super(plugin);
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
