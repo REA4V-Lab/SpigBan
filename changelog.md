@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 2.0.2
+## Version 2.0.0
 
 ### 🔧 Fixes & Improvements
 - **Fixed incompatible types error in CaseCommand**: Resolved compilation error where void was being returned instead of boolean
