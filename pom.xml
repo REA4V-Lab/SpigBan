@@ -6,7 +6,7 @@
 
     <groupId>dev.emanuelplays</groupId>
     <artifactId>SpigBan</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
     <packaging>jar</packaging>
 
     <name>SpigBan</name>
@@ -52,6 +52,7 @@
             <version>3.45.3.0</version>
             <scope>compile</scope>
         </dependency>
+
         <!-- MySQL Connector/J -->
         <dependency>
             <groupId>com.mysql</groupId>
@@ -60,7 +61,7 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- Google Protobuf -->    
+        <!-- Google Protobuf -->
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
