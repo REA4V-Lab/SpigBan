@@ -123,7 +123,7 @@ public class DatabaseManager {
 
     // ── Connection Management ─────────────────────────────────────────────
 
-    private synchronized Connection getConnection() {
+    public synchronized Connection getConnection() {
         try {
             if (connection == null || connection.isClosed()) {
                 plugin.getLogger().warning("Database connection lost. Reconnecting...");
