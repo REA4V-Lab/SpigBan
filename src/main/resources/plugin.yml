@@ -4,6 +4,7 @@ main: dev.emanuelplays.spigban.SpigBan
 api-version: "1.21"
 description: Advanced all-in-one punishment management plugin
 authors: [EmanuelPlays, REA4V]
+website: "https://emanuelplays.github.io/rea4vwebsite/"
 
 commands:
   ban:
