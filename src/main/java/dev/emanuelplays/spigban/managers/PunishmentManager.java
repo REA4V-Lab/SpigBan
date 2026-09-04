@@ -255,6 +255,22 @@ public class PunishmentManager {
         return true;
     }
 
+    public boolean deletePunishmentByCaseId(String caseId) {
+        Optional<Punishment> opt = plugin.getDatabaseManager().getPunishmentByCaseId(caseId);
+        if (opt.isEmpty()) {
+            return false;
+        }
+        String sql = "DELETE FROM spigban_punishments WHERE case_id = ?";
+        try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(sql)) {
+            ps.setString(1, caseId);
+            int affected = ps.executeUpdate();
+            return affected > 0;
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to delete punishment " + caseId, e);
+            return false;
+        }
+    }
+
     public int unwarnAll(UUID targetUuid) {
         // Count active warns first
         int count = plugin.getDatabaseManager().countActiveWarnings(targetUuid);

@@ -110,6 +110,15 @@ update-checking:
   # Notify admins/console when an update is available
   notify-on-update: true
 
+# Clearlag Settings
+clearlag:
+  # Enable automatic clearlag task
+  enabled: false
+  # How often (in minutes) to run the automatic clearlag (0 = disabled)
+  interval: 5
+  # Notify operators (players with spigban.notify) when clearlag runs
+  notify-ops: true
+
 # -----------------------------------------------------------
 # SPIGBAN 2.0.0 --- SEE LATEST IN THE GITHUB REPO FOR UPDATES
 # ARR - ALL RIGHTS RESERVED

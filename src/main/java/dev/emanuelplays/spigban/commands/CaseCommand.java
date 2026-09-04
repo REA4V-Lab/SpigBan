@@ -14,13 +14,15 @@ import java.util.*;
 import java.util.Optional;
 
 /**
- * /case <caseId> [delete/save/close] — Displays detailed info about a punishment case or performs actions.
+ * /case <caseId> [delete/save/close/reason/notes] — Displays detailed info about a punishment case or performs actions.
  *
  * Examples:
  *   /case SPGB-A1B2C3          — Shows case details
  *   /case SPGB-A1B2C3 delete   — Deletes the case
  *   /case SPGB-A1B2C3 close    — Closes (deactivates) the case
  *   /case SPGB-A1B2C3 save     — Placeholder for saving (not implemented)
+ *   /case SPGB-A1B2C3 reason <new reason> — Updates the reason for the case
+ *   /case SPGB-A1B2C3 notes <new notes>   — Updates the notes for the case
  */
 public class CaseCommand extends BaseCommand {
 
@@ -35,7 +37,7 @@ public class CaseCommand extends BaseCommand {
             return true;
         }
         if (args.length < 1) {
-            sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cUsage: /case <caseId> [delete/save/close]");
+            sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cUsage: /case <caseId> [delete/save/close/reason <text>/notes <text>]");
             return true;
         }
 
@@ -47,13 +49,15 @@ public class CaseCommand extends BaseCommand {
             return true;
         }
 
+        Punishment punishment = opt.get();
+
         // If only caseId is provided, show case details
         if (args.length == 1) {
-            showCaseDetails(sender, opt.get());
+            showCaseDetails(sender, punishment);
             return true;
         }
 
-        // Handle subcommands
+        // Handle subcommands with exactly two arguments (caseId and subcommand)
         if (args.length == 2) {
             String subcmd = args[1].toLowerCase();
             switch (subcmd) {
@@ -64,13 +68,28 @@ public class CaseCommand extends BaseCommand {
                 case "save":
                     return handleSaveCase(sender, caseId);
                 default:
-                    sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cUnknown subcommand. Use: delete, save, close");
+                    sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cUnknown subcommand. Use: delete, save, close, reason <text>, notes <text>");
+                    return true;
+            }
+        }
+
+        // Handle subcommands with three arguments (caseId, subcommand, value)
+        if (args.length == 3) {
+            String subcmd = args[1].toLowerCase();
+            String value = args[2];
+            switch (subcmd) {
+                case "reason":
+                    return handleReasonCase(sender, caseId, value);
+                case "notes":
+                    return handleNotesCase(sender, caseId, value);
+                default:
+                    sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cUnknown subcommand. Use: delete, save, close, reason <text>, notes <text>");
                     return true;
             }
         }
 
         // Too many arguments
-        sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cUsage: /case <caseId> [delete/save/close]");
+        sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§cUsage: /case <caseId> [delete/save/close/reason <text>/notes <text>]");
         return true;
     }
 
@@ -149,7 +168,7 @@ public class CaseCommand extends BaseCommand {
      * Handles deleting a case.
      */
     private boolean handleDeleteCase(CommandSender sender, String caseId) {
-        boolean removed = plugin.getPunishmentManager().unwarnByCase(sender, caseId);
+        boolean removed = plugin.getPunishmentManager().deletePunishmentByCaseId(caseId);
         if (removed) {
             sender.sendMessage(plugin.getMessageUtil().get("casesdeleted", Map.of("case_id", caseId)));
         } else {
@@ -172,6 +191,40 @@ public class CaseCommand extends BaseCommand {
      */
     private boolean handleSaveCase(CommandSender sender, String caseId) {
         sender.sendMessage(plugin.getMessageUtil().getPrefix() + "Saving case §e" + caseId + " §fis not yet implemented.");
+        return true;
+    }
+
+    /**
+     * Handles updating the reason for a case.
+     */
+    private boolean handleReasonCase(CommandSender sender, String caseId, String newReason) {
+        Optional<Punishment> opt = plugin.getDatabaseManager().getPunishmentByCaseId(caseId);
+        if (opt.isEmpty()) {
+            sender.sendMessage(plugin.getMessageUtil().get("case-not-found", Map.of("case_id", caseId)));
+            return true;
+        }
+
+        Punishment punishment = opt.get();
+        punishment.setReason(newReason);
+        plugin.getDatabaseManager().updatePunishment(punishment);
+        sender.sendMessage(plugin.getMessageUtil().getPrefix() + "Reason for case §e" + caseId + " §ahas been updated.");
+        return true;
+    }
+
+    /**
+     * Handles updating the notes for a case.
+     */
+    private boolean handleNotesCase(CommandSender sender, String caseId, String newNotes) {
+        Optional<Punishment> opt = plugin.getDatabaseManager().getPunishmentByCaseId(caseId);
+        if (opt.isEmpty()) {
+            sender.sendMessage(plugin.getMessageUtil().get("case-not-found", Map.of("case_id", caseId)));
+            return true;
+        }
+
+        Punishment punishment = opt.get();
+        punishment.setNotes(newNotes);
+        plugin.getDatabaseManager().updatePunishment(punishment);
+        sender.sendMessage(plugin.getMessageUtil().getPrefix() + "Notes for case §e" + caseId + " §ahave been updated.");
         return true;
     }
 

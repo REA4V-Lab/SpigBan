@@ -1,5 +1,19 @@
 # Changelog
 
+## Version 2.0.2
+### 🔧 Fixes & Improvements
+- Fixed missing subcommands in `/spigban` usage (cleanup, check, version) in plugin.yml
+- **Fixed Case delete for all types**: The `/case <id> delete` subcommand now works for any punishment type (ban, mute, etc.), not just warns
+- **Added clearlag feature**: Automatic removal of lag-inducing entities (items, experience orbs) with configurable interval and notifications to operators
+  - Disabled by default; enable in config.yml under `clearlag.enabled`
+  - Configurable interval (minutes) under `clearlag.interval`
+  - Option to notify operators when clearlag runs under `clearlag.notify-ops`
+  - Manual `/spigban clearlag` command available for operators
+- **Added reason and notes subcommands to CaseCommand**: The `/case <id>` command now supports:
+  - `/case <id> reason <new reason>` - Update the reason for a punishment case
+  - `/case <id> notes <new notes>` - Update the notes for a punishment case
+- Updated version to 2.0.2
+
 ## Version 2.0.0
 
 ### 🔧 Fixes & Improvements

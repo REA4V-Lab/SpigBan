@@ -8,11 +8,16 @@ import dev.emanuelplays.spigban.managers.CaseManager;
 import dev.emanuelplays.spigban.managers.PunishmentManager;
 import dev.emanuelplays.spigban.utils.MessageUtil;
 import dev.emanuelplays.spigban.utils.UpdateChecker;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Item;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
- * @version 2.0.0
+ * @version 2.0.2
  */
 public class SpigBan extends JavaPlugin {
 
@@ -48,6 +53,7 @@ public class SpigBan extends JavaPlugin {
         registerCommands();
         registerListeners();
         scheduleCleanup();
+        scheduleClearlag();
 
         getLogger().info("╔══════════════════════════════════╗");
         getLogger().info("║  SpigBan v" + getDescription().getVersion() + " enabled!          ║");
@@ -140,6 +146,44 @@ public class SpigBan extends JavaPlugin {
     }
 
     // ── Scheduled tasks ────────────────────────────────────────────────────
+
+    private void scheduleClearlag() {
+        int intervalMinutes = getConfig().getInt("clearlag.interval", 5);
+        if (intervalMinutes <= 0) return;
+
+        long ticks = intervalMinutes * 60L * 20L;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                int cleared = clearLag();
+                if (cleared > 0 && getConfig().getBoolean("clearlag.notify-ops", true)) {
+                    String message = getMessageUtil().getPrefix() + "§aCleared §f" + cleared + " §alag-inducing entities.";
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        if (player.hasPermission("spigban.notify")) {
+                            player.sendMessage(message);
+                        }
+                    }
+                    if (getConfig().getBoolean("broadcast.console", true)) {
+                        getLogger().info(MessageUtil.strip(message));
+                    }
+                }
+            }
+        }.runTaskTimerAsynchronously(this, ticks, ticks);
+    }
+
+    public int clearLag() {
+        int count = 0;
+        for (World world : Bukkit.getWorlds()) {
+            for (Entity entity : world.getEntities()) {
+                if (entity instanceof Item || entity instanceof ExperienceOrb) {
+                    entity.remove();
+                    count++;
+                }
+                // We can add more entity types here if needed (e.g., falling blocks, etc.)
+            }
+        }
+        return count;
+    }
 
     private void scheduleCleanup() {
         int intervalMinutes = getConfig().getInt("database.cleanup-interval", 5);

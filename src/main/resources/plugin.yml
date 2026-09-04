@@ -3,8 +3,7 @@ version: ${project.version}
 main: dev.emanuelplays.spigban.SpigBan
 api-version: "1.21"
 description: Advanced all-in-one punishment management plugin
-authors: [EmanuelPlays]
-website: https://rea4v.xo.je
+authors: [EmanuelPlays, REA4V]
 
 commands:
   ban:
@@ -77,7 +76,7 @@ commands:
     permission: spigban.kofi
   spigban:
     description: SpigBan admin commands
-    usage: /spigban <reload|info|purge>
+    usage: /spigban <reload|info|purge|cleanup|check|version>
     permission: spigban.admin
 
 

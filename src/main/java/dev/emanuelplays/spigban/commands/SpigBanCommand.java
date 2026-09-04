@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * /spigban <reload|info|purge [confirm]>
+ * /spigban <reload|info|purge [confirm]|cleanup|check|version|clearlag>
  */
 public class SpigBanCommand implements CommandExecutor, TabCompleter {
 
@@ -116,6 +116,27 @@ public class SpigBanCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(MessageUtil.colorize("  §7Total§8:   §f" + total + " §7punishment records"));
             }
 
+            case "clearlag" -> {
+                if (!sender.hasPermission("spigban.admin")) {
+                    sender.sendMessage(plugin.getMessageUtil().get("no-permission"));
+                    return true;
+                }
+                int cleared = plugin.clearLag();
+                sender.sendMessage(plugin.getMessageUtil().getPrefix() + "§aCleared §f" + cleared + " §alag-inducing entities.");
+                // Also notify ops if enabled in config
+                if (plugin.getConfig().getBoolean("clearlag.notify-ops", true)) {
+                    String message = plugin.getMessageUtil().getPrefix() + "§aCleared §f" + cleared + " §alag-inducing entities (by " + sender.getName() + ").";
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        if (player.hasPermission("spigban.notify")) {
+                            player.sendMessage(message);
+                        }
+                    }
+                    if (plugin.getConfig().getBoolean("broadcast.console", true)) {
+                        plugin.getLogger().info(MessageUtil.strip(message));
+                    }
+                }
+            }
+
             default -> sendHelp(sender);
         }
         return true;
@@ -129,13 +150,14 @@ public class SpigBanCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(MessageUtil.colorize("  §b/spigban cleanup §7- Mark expired punishments inactive"));
         sender.sendMessage(MessageUtil.colorize("  §b/spigban purge [confirm] §7- Delete inactive records"));
         sender.sendMessage(MessageUtil.colorize("  §b/spigban version §7- Check for updates and show current version"));
+        sender.sendMessage(MessageUtil.colorize("  §b/spigban clearlag §7- Clear lag-inducing entities"));
         sender.sendMessage(MessageUtil.colorize("§8&m-------------------------------"));
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return List.of("reload", "info", "purge", "cleanup", "check", "version").stream()
+            return List.of("reload", "info", "purge", "cleanup", "check", "version", "clearlag").stream()
                     .filter(s -> s.startsWith(args[0].toLowerCase()))
                     .collect(Collectors.toList());
         }
@@ -145,6 +167,7 @@ public class SpigBanCommand implements CommandExecutor, TabCompleter {
                     .stream().map(p -> p.getName())
                     .filter(n -> n.toLowerCase().startsWith(args[1].toLowerCase()))
                     .collect(Collectors.toList());
+            // Clearlag doesn't take arguments, so we return empty for now
         }
         return Collections.emptyList();
     }
