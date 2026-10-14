@@ -54,7 +54,6 @@ See `src/main/resources/config.yml`.
 ## License & CLA
 - License: see `LICENSE`.
 - CLA: see `CLA.md`.
-- CLA bot integration: configured under `.github/` (cla-assistant).
 
 
 
